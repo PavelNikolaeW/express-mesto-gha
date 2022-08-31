@@ -1,0 +1,23 @@
+patch http://localhost:3000/users/me/avatar
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "about": "testцйвwdq ewq dqdц ",
+  "avatar": "avatar"
+}
+
+###
+get http://localhost:3000/cards/
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "about": "testцйвwdq ewq dqdц ",
+  "link": "link",
+  "avatar": "avatar"
+}
+
+###
+delete http://localhost:3000/cards/630a59ab9c15023fc031c3ec/likes/
+Content-Type: application/json
