@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ###
-get http://localhost:3000/cards/
+delete http://localhost:3000/cards/63131564bdce7a14218234aa
 Content-Type: application/json
 
 {
@@ -19,5 +19,5 @@ Content-Type: application/json
 }
 
 ###
-delete http://localhost:3000/cards/630a59ab9c15023fc031c3ec/likes/
+put http://localhost:3000/cards/63131564bdce7a14218234aa/likes/
 Content-Type: application/json

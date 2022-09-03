@@ -1,18 +1,23 @@
 const User = require("../models/user");
+const handleErrors = require("../errors/handleErrors");
+const NotFoundError = require("../errors/NotFoundError");
 
-module.exports.getUser = (req, res, next) => {
+module.exports.getUser = (req, res) => {
   User.find(req.params.id ? { _id: req.params.id } : {})
-    .then((users) => res.send({ data: users }))
+    .then((users) => {
+      if (!users) throw new NotFoundError();
+      res.send({ data: users });
+    })
     .catch((err) => handleErrors(err, res));
 };
 
-module.exports.createUser = (req, res, next) => {
+module.exports.createUser = (req, res) => {
   User.create(req.body)
     .then((user) => res.send(user))
     .catch((err) => handleErrors(err, res));
 };
 
-module.exports.updateUser = (req, res, next) => {
+module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(
@@ -24,7 +29,7 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => handleErrors(err, res));
 };
 
-module.exports.updateUserAvatar = (req, res, next) => {
+module.exports.updateUserAvatar = (req, res) => {
   const { avater } = req.body;
 
   User.findByIdAndUpdate(

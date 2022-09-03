@@ -1,4 +1,5 @@
 function handleErrors(err, res) {
+  console.log('kek');
   if (err.name === "NotFoundError") {
     res.status(404).send({ message: "Страница не найдена" });
   } else if (err.name === "ValidationError") {
@@ -8,4 +9,4 @@ function handleErrors(err, res) {
   }
 }
 
-module.exports = handleErrors
+module.exports = handleErrors;

@@ -1,46 +1,44 @@
-const { handleErrors } = require("../errors/handleErrors");
-
+const handleErrors = require("../errors/handleErrors");
+const NotFoundError = require("../errors/NotFoundError")
 const Card = require("../models/card");
 
-module.exports.getCard = (req, res, next) => {
+module.exports.getCards = (req, res) => {
   Card.find({})
     .populate(["owner", "likes"])
     .then((cards) => res.send(cards))
     .catch((err) => handleErrors(err, res));
 };
 
-module.exports.createCard = (req, res, next) => {
-  console.dir(req.method);
+module.exports.createCard = (req, res) => {
   Card.create({ ...req.body, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => handleErrors(err, res));
 };
 
-module.exports.deleteCard = (req, res, next) => {
+module.exports.deleteCard = (req, res) => {
   Card.findById(req.params.id)
     .populate(["owner"])
     .then((card) => {
-      if (req.user._id === card.owner._id)
-        return Card.findByIdAndDelete(card._id);
-      res.send({ message: "Карточка не удалена" });
+      if (req.user._id === card.owner._id) return Card.findByIdAndDelete(card._id);
+      throw new NotFoundError();
     })
     .then(() => res.send({ message: "Карточка удалена" }))
     .catch((err) => handleErrors(err, res));
 };
 
-module.exports.likesCard = (req, res, next) => {
+module.exports.likesCard = (req, res) => {
   const action = req.method === "PUT" ? "$addToSet" : "$pull";
   Card.findOneAndUpdate(
     req.params.id,
     { [action]: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
     .populate(["owner", "likes"])
     .then((card) => {
-      if (!card) {
-        res.send({ message: "Карточка не найдена" });
-      } else {
+      if (card) {
         res.send({ data: card });
+      } else {
+        throw new NotFoundError();
       }
     })
     .catch((err) => handleErrors(err, res));
