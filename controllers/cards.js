@@ -28,7 +28,7 @@ module.exports.deleteCard = (req, res) => {
 
 module.exports.likesCard = (req, res) => {
   const action = req.method === "PUT" ? "$addToSet" : "$pull";
-  Card.findOneAndUpdate(
+  Card.findByIdAndUpdate(
     req.params.id,
     { [action]: { likes: req.user._id } },
     { new: true },
