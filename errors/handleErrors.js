@@ -1,7 +1,6 @@
 function handleErrors(err, res) {
-  console.log('kek');
   if (err.name === "NotFoundError") {
-    res.status(404).send({ message: "Страница не найдена" });
+    res.status(404).send({ message: err.message });
   } else if (err.name === "ValidationError") {
     res.status(500).send({ message: "Ошибка сервера" });
   } else if (err.name === "CastError") {

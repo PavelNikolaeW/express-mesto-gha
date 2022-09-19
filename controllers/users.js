@@ -2,10 +2,9 @@ const User = require("../models/user");
 const handleErrors = require("../errors/handleErrors");
 const NotFoundError = require("../errors/NotFoundError");
 
-module.exports.getUser = (req, res) => {
+module.exports.getUsers = (req, res) => {
   User.find(req.params.id ? { _id: req.params.id } : {})
     .then((users) => {
-      if (!users) throw new NotFoundError();
       res.send({ data: users });
     })
     .catch((err) => handleErrors(err, res));

@@ -20,7 +20,7 @@ module.exports.deleteCard = (req, res) => {
     .populate(["owner"])
     .then((card) => {
       if (req.user._id === card.owner._id) return Card.findByIdAndDelete(card._id);
-      throw new NotFoundError();
+      throw new NotFoundError("Карточка не найдена");
     })
     .then(() => res.send({ message: "Карточка удалена" }))
     .catch((err) => handleErrors(err, res));
@@ -38,7 +38,7 @@ module.exports.likesCard = (req, res) => {
       if (card) {
         res.send({ data: card });
       } else {
-        throw new NotFoundError();
+        throw new NotFoundError("Карточка не найдена");
       }
     })
     .catch((err) => handleErrors(err, res));
