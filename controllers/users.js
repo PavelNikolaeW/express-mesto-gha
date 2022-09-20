@@ -3,11 +3,17 @@ const handleErrors = require("../errors/handleErrors");
 const NotFoundError = require("../errors/NotFoundError");
 
 module.exports.getUsers = (req, res) => {
-  User.find(req.params.id ? { _id: req.params.id } : {})
-    .then((users) => {
-      res.send({ data: users });
-    })
+  User.find({})
+    .then((users) => res.send({ data: users }))
     .catch((err) => handleErrors(err, res));
+};
+
+module.exports.getUserById = (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      res.send({ data: user });
+    })
+    .catch((err) => handleErrors(new NotFoundError("Пользователь не найден"), res));
 };
 
 module.exports.createUser = (req, res) => {

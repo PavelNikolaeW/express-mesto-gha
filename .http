@@ -1,4 +1,4 @@
-patch http://localhost:3000/users/me/avatar
+get http://localhost:3000/users/630a49fe182e4084ef1b0038w
 Content-Type: application/json
 
 {
